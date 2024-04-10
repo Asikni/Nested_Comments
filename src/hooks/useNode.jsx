@@ -1,7 +1,7 @@
 const useNode = () => {
   const insertNode = function (tree, commentId, item) {
     if (tree.id === commentId) {
-      //starting pe id ==1
+      //starting pe tree.id & comment.id == 1 for main comments
 
       tree.items.push({
         //each object gets stored in an array

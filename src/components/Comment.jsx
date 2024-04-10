@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import Action from "./Action";
 import { ReactComponent as DownArrow } from "../assets/down-arrow.svg";
 import { ReactComponent as UpArrow } from "../assets/up-arrow.svg";
-
+import Button from "./button";
 const Comment = ({
   handleInsertNode,
   handleEditNode,
@@ -12,7 +12,7 @@ const Comment = ({
   const [input, setInput] = useState("");
   const [editMode, setEditMode] = useState(false);
   const [showInput, setShowInput] = useState(false);
-  const [expand, setExpand] = useState(false);
+  const [expand, setExpand] = useState(false); // For arrows
   const inputRef = useRef(null);
 
   useEffect(() => {
@@ -22,16 +22,19 @@ const Comment = ({
   const handleNewComment = () => {
     setExpand(!expand);
     setShowInput(true);
+    console.log("reply clicked", expand);
   };
 
   const onAddComment = () => {
+    console.log("button clicked");
     if (editMode) {
       handleEditNode(comment.id, inputRef?.current?.innerText);
     } else {
-      setExpand(true);
-      handleInsertNode(comment.id, input);   //starting pe comment.id = 1
+      setExpand(true); ///use effect for this
+      handleInsertNode(comment.id, input); //starting pe comment.id = 1
       setShowInput(false);
       setInput("");
+      console.log("comment add", expand);
     }
 
     if (editMode) setEditMode(false);
@@ -50,16 +53,20 @@ const Comment = ({
               type="text"
               className="inputContainer__input first_input"
               autoFocus
-              value={input}   //whatever value is currently stored in the input state variable will be displayed in the input field
+              value={input} //whatever value is currently stored in the input state variable will be displayed in the input field
               onChange={(e) => setInput(e.target.value)}
               placeholder="Type something..."
             />
 
-            <Action
+            {/* <Action
               className="reply comment"
-              type="COMMENT"
+              type="POST SOMETHING"
               handleClick={onAddComment}
-            />
+            /> */}
+
+            <Button classname="reply comment" handleClick={onAddComment}>
+              Post Something
+            </Button>
           </>
         ) : (
           <>
@@ -125,7 +132,7 @@ const Comment = ({
         )}
       </div>
 
-      <div style={{ display: expand ? "block" : "none", paddingLeft: 25 }}>
+      <div style={{ display: expand ? "block" : "none", paddingLeft: 50 }}>
         {showInput && (
           <div className="inputContainer">
             <input
@@ -146,10 +153,11 @@ const Comment = ({
           </div>
         )}
 
-        {comment?.items?.map((cmnt) => {  //map the comments
-        // The ?. is the optional chaining operator in JavaScript. It's used to safely access properties of an 
-        //object without causing an error if a property is nullish (null or undefined). So, if comment is nullish 
-        //or if items within comment is nullish, the expression will short-circuit and return undefined. Otherwise, it will return the value of items.
+        {comment?.items?.map((cmnt) => {
+          //map the comments
+          // The ?. is the optional chaining operator in JavaScript. It's used to safely access properties of an
+          //object without causing an error if a property is nullish (null or undefined). So, if comment is nullish
+          //or if items within comment is nullish, the expression will short-circuit and return undefined. Otherwise, it will return the value of items.
           return (
             <Comment
               key={cmnt.id}
