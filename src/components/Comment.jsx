@@ -22,19 +22,19 @@ const Comment = ({
   const handleNewComment = () => {
     setExpand(!expand);
     setShowInput(true);
-    console.log("reply clicked", expand);
   };
 
   const onAddComment = () => {
-    console.log("button clicked");
-    if (editMode) {
-      handleEditNode(comment.id, inputRef?.current?.innerText);
-    } else {
-      setExpand(true); ///use effect for this
-      handleInsertNode(comment.id, input); //starting pe comment.id = 1
-      setShowInput(false);
-      setInput("");
-      console.log("comment add", expand);
+    // Check if the input is not empty
+    if (input.trim().length > 0) {
+      if (editMode) {
+        handleEditNode(comment.id, inputRef?.current?.innerText);
+      } else {
+        setExpand(true);
+        handleInsertNode(comment.id, input);
+        setShowInput(false);
+        setInput("");
+      }
     }
 
     if (editMode) setEditMode(false);
@@ -57,12 +57,6 @@ const Comment = ({
               onChange={(e) => setInput(e.target.value)}
               placeholder="Type something..."
             />
-
-            {/* <Action
-              className="reply comment"
-              type="POST SOMETHING"
-              handleClick={onAddComment}
-            /> */}
 
             <Button classname="reply comment" handleClick={onAddComment}>
               Post Something
@@ -134,7 +128,7 @@ const Comment = ({
 
       <div style={{ display: expand ? "block" : "none", paddingLeft: 50 }}>
         {showInput && (
-          <div className="inputContainer">
+          <div className="inputContainer" style={{ border: "1px solid red" }}>
             <input
               type="text"
               className="inputContainer__input"
