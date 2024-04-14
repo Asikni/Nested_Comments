@@ -9,16 +9,16 @@ const useNode = () => {
         name: item,
         items: [],
       });
-      console.log(tree.items);
+
       return tree;
     }
 
-    let latestNode = [];
+    let latestNode = []; //for replies
     latestNode = tree.items.map((ob) => {
       return insertNode(ob, commentId, item);
     });
 
-    return { ...tree, items: latestNode };
+    return { ...tree, latestNode };  //
   };
 
   const editNode = (tree, commentId, value) => {
@@ -47,7 +47,7 @@ const useNode = () => {
     return tree;
   };
 
-  return { insertNode, editNode, deleteNode };
+  return { insertNode };
 };
 
 export default useNode;

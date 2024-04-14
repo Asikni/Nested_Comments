@@ -20,12 +20,13 @@ const Comment = ({
   }, [editMode]);
 
   const handleNewComment = () => {
-    setExpand(!expand);
+    setExpand(true);
     setShowInput(true);
   };
 
   const onAddComment = () => {
     // Check if the input is not empty
+
     if (input.trim().length > 0) {
       if (editMode) {
         handleEditNode(comment.id, inputRef?.current?.innerText);
@@ -34,6 +35,7 @@ const Comment = ({
         handleInsertNode(comment.id, input);
         setShowInput(false);
         setInput("");
+        setEditMode(false);
       }
     }
 
@@ -68,7 +70,7 @@ const Comment = ({
               contentEditable={editMode}
               suppressContentEditableWarning={editMode}
               ref={inputRef}
-              style={{ wordWrap: "break-word" }}
+              style={{ wordWrap: "break-word", border: "none" }}
             >
               {comment.name}
             </span>
@@ -128,11 +130,11 @@ const Comment = ({
 
       <div style={{ display: expand ? "block" : "none", paddingLeft: 50 }}>
         {showInput && (
-          <div className="inputContainer" style={{ border: "1px solid red" }}>
+          <div className="inputContainer">
             <input
               type="text"
               className="inputContainer__input"
-              autoFocus
+              style={{ backgroundColor: "yellow" }}
               onChange={(e) => setInput(e.target.value)}
             />
             <Action className="reply" type="REPLY" handleClick={onAddComment} />

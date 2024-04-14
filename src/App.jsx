@@ -12,8 +12,10 @@ const App = () => {
 
   const { insertNode, editNode, deleteNode } = useNode();
 
-  const handleInsertNode = (folderId, item) => {// item = input
+  const handleInsertNode = (folderId, item) => {
+    // item = input
     const finalStructure = insertNode(commentsData, folderId, item);
+    console.log(finalStructure);
     setCommentsData(finalStructure);
   };
 
