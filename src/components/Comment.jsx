@@ -3,6 +3,7 @@ import Action from "./Action";
 import { ReactComponent as DownArrow } from "../assets/down-arrow.svg";
 import { ReactComponent as UpArrow } from "../assets/up-arrow.svg";
 import Button from "./button";
+
 const Comment = ({
   handleInsertNode,
   handleEditNode,
@@ -20,19 +21,23 @@ const Comment = ({
   }, [editMode]);
 
   const handleNewComment = () => {
-    setExpand(true);
+    setExpand(!expand);
     setShowInput(true);
   };
 
   const onAddComment = () => {
     // Check if the input is not empty
-
     if (input.trim().length > 0) {
+      const currentDate = new Date();
+      const dateString = currentDate.toLocaleDateString(); // e.g., "4/15/2023"
+      const timeString = currentDate.toLocaleTimeString(); // e.g., "3:24:00 PM"
+      const dateTime = `${dateString} ${timeString}`; // Combine date and time
+
       if (editMode) {
-        handleEditNode(comment.id, inputRef?.current?.innerText);
+        handleEditNode(comment.id, inputRef?.current?.innerText, dateTime);
       } else {
         setExpand(true);
-        handleInsertNode(comment.id, input);
+        handleInsertNode(comment.id, input, dateTime);
         setShowInput(false);
         setInput("");
         setEditMode(false);
@@ -55,7 +60,7 @@ const Comment = ({
               type="text"
               className="inputContainer__input first_input"
               autoFocus
-              value={input} //whatever value is currently stored in the input state variable will be displayed in the input field
+              value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Type something..."
             />
@@ -150,18 +155,18 @@ const Comment = ({
         )}
 
         {comment?.items?.map((cmnt) => {
-          //map the comments
-          // The ?. is the optional chaining operator in JavaScript. It's used to safely access properties of an
-          //object without causing an error if a property is nullish (null or undefined). So, if comment is nullish
-          //or if items within comment is nullish, the expression will short-circuit and return undefined. Otherwise, it will return the value of items.
           return (
-            <Comment
-              key={cmnt.id}
-              handleInsertNode={handleInsertNode}
-              handleEditNode={handleEditNode}
-              handleDeleteNode={handleDeleteNode}
-              comment={cmnt}
-            />
+            <div key={cmnt.id}>
+              <div>
+                <span>{cmnt.dateTime}</span> {/* Display date and time */}
+              </div>
+              <Comment
+                handleInsertNode={handleInsertNode}
+                handleEditNode={handleEditNode}
+                handleDeleteNode={handleDeleteNode}
+                comment={cmnt}
+              />
+            </div>
           );
         })}
       </div>

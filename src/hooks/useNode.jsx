@@ -1,38 +1,37 @@
 const useNode = () => {
-  const insertNode = function (tree, commentId, item) {
+  const insertNode = function (tree, commentId, item, dateTime) {
     if (tree.id === commentId) {
-      //starting pe tree.id & comment.id == 1 for main comments
-
       tree.items.push({
-        //each object gets stored in an array
         id: new Date().getTime(),
         name: item,
+        dateTime: dateTime, // Add dateTime property
         items: [],
       });
 
       return tree;
     }
 
-    let latestNode = []; //for replies
-    latestNode = tree.items.map((ob) => {
-      return insertNode(ob, commentId, item);
+    tree.items.forEach((ob) => {
+      insertNode(ob, commentId, item, dateTime);
     });
 
-    return { ...tree, latestNode };  //
+    return tree;
   };
 
-  const editNode = (tree, commentId, value) => {
+  const editNode = (tree, commentId, value, dateTime) => {
     if (tree.id === commentId) {
       tree.name = value;
+      tree.dateTime = dateTime; // Update dateTime property
       return tree;
     }
 
-    tree.items.map((ob) => {
-      return editNode(ob, commentId, value);
+    tree.items.forEach((ob) => {
+      editNode(ob, commentId, value, dateTime);
     });
 
-    return { ...tree };
+    return tree;
   };
+
 
   const deleteNode = (tree, id) => {
     for (let i = 0; i < tree.items.length; i++) {
@@ -47,7 +46,7 @@ const useNode = () => {
     return tree;
   };
 
-  return { insertNode };
+  return { insertNode, editNode, deleteNode };
 };
 
 export default useNode;

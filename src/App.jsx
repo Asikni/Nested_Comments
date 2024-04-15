@@ -15,7 +15,7 @@ const App = () => {
   const handleInsertNode = (folderId, item) => {
     // item = input
     const finalStructure = insertNode(commentsData, folderId, item);
-    console.log(finalStructure);
+
     setCommentsData(finalStructure);
   };
 
