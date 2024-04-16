@@ -50,16 +50,16 @@ const Comment = ({
 
   const getRelativeTime = (dateTime) => {
     const now = new Date();
-    const commentTime = new Date(dateTime);
+    const commentTime = new Date(dateTime); //check time at dateTime event
+
     const timeDifference = Math.abs(now - commentTime);
 
-    // Define time units
+
     const minute = 60 * 1000;
     const hour = minute * 60;
     const day = hour * 24;
-    const month = day * 30; // Rough estimation of a month
+    const month = day * 30;
 
-    // Calculate relative time
     if (timeDifference < minute) {
       return "a few seconds ago";
     } else if (timeDifference < hour) {
@@ -153,7 +153,6 @@ const Comment = ({
                   />
                   {/* <div>{comment.dateTime.toLocaleString()}</div> */}
                   <div>{getRelativeTime(comment.dateTime)}</div>
-
                 </>
               )}
             </div>
@@ -185,7 +184,6 @@ const Comment = ({
         {comment?.items?.toReversed().map((cmnt) => {
           return (
             <div key={cmnt.id}>
-          
               <Comment
                 handleInsertNode={handleInsertNode}
                 handleEditNode={handleEditNode}
