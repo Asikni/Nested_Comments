@@ -4,14 +4,14 @@ const useNode = () => {
       tree.items.push({
         id: new Date().getTime(),
         name: item,
-        dateTime: dateTime, // Add dateTime property
+        dateTime: new Date(),
         items: [],
       });
-
+      console.log(tree);
       return tree;
     }
 
-    tree.items.forEach((ob) => {
+    tree.items.toReversed().forEach((ob) => {
       insertNode(ob, commentId, item, dateTime);
     });
 
@@ -21,7 +21,7 @@ const useNode = () => {
   const editNode = (tree, commentId, value, dateTime) => {
     if (tree.id === commentId) {
       tree.name = value;
-      tree.dateTime = dateTime; // Update dateTime property
+      tree.dateTime = dateTime;
       return tree;
     }
 
@@ -31,7 +31,6 @@ const useNode = () => {
 
     return tree;
   };
-
 
   const deleteNode = (tree, id) => {
     for (let i = 0; i < tree.items.length; i++) {

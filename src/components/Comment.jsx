@@ -28,27 +28,52 @@ const Comment = ({
   const onAddComment = () => {
     // Check if the input is not empty
     if (input.trim().length > 0) {
-      const currentDate = new Date();
-      const dateString = currentDate.toLocaleDateString(); // e.g., "4/15/2023"
-      const timeString = currentDate.toLocaleTimeString(); // e.g., "3:24:00 PM"
-      const dateTime = `${dateString} ${timeString}`; // Combine date and time
-
       if (editMode) {
-        handleEditNode(comment.id, inputRef?.current?.innerText, dateTime);
+        handleEditNode(
+          comment.id,
+          inputRef?.current?.innerText,
+          comment.dateTime
+        );
       } else {
         setExpand(true);
-        handleInsertNode(comment.id, input, dateTime);
+        handleInsertNode(comment.id, input, comment.dateTime);
         setShowInput(false);
         setInput("");
         setEditMode(false);
       }
     }
-
-    if (editMode) setEditMode(false);
   };
 
   const handleDelete = () => {
     handleDeleteNode(comment.id);
+  };
+
+  const getRelativeTime = (dateTime) => {
+    const now = new Date();
+    const commentTime = new Date(dateTime);
+    const timeDifference = Math.abs(now - commentTime);
+
+    // Define time units
+    const minute = 60 * 1000;
+    const hour = minute * 60;
+    const day = hour * 24;
+    const month = day * 30; // Rough estimation of a month
+
+    // Calculate relative time
+    if (timeDifference < minute) {
+      return "a few seconds ago";
+    } else if (timeDifference < hour) {
+      const minutes = Math.floor(timeDifference / minute);
+      return `${minutes} ${minutes === 1 ? "minute" : "minutes"} ago`;
+    } else if (timeDifference < day) {
+      const hours = Math.floor(timeDifference / hour);
+      return `${hours} ${hours === 1 ? "hour" : "hours"} ago`;
+    } else if (timeDifference < month) {
+      const days = Math.floor(timeDifference / day);
+      return `${days} ${days === 1 ? "day" : "days"} ago`;
+    } else {
+      return "more than a month ago";
+    }
   };
 
   return (
@@ -80,7 +105,7 @@ const Comment = ({
               {comment.name}
             </span>
 
-            <div style={{ display: "flex", marginTop: "5px" }}>
+            <div className="cmntreply">
               {editMode ? (
                 <>
                   <Action
@@ -126,6 +151,9 @@ const Comment = ({
                     type="DELETE"
                     handleClick={handleDelete}
                   />
+                  {/* <div>{comment.dateTime.toLocaleString()}</div> */}
+                  <div>{getRelativeTime(comment.dateTime)}</div>
+
                 </>
               )}
             </div>
@@ -154,12 +182,10 @@ const Comment = ({
           </div>
         )}
 
-        {comment?.items?.map((cmnt) => {
+        {comment?.items?.toReversed().map((cmnt) => {
           return (
             <div key={cmnt.id}>
-              <div>
-                <span>{cmnt.dateTime}</span> {/* Display date and time */}
-              </div>
+          
               <Comment
                 handleInsertNode={handleInsertNode}
                 handleEditNode={handleEditNode}

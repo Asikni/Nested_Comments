@@ -5,6 +5,7 @@ import "./styles.css";
 
 const comments = {
   id: 1,
+  dateTime: "",
   items: [],
 };
 const App = () => {
@@ -12,15 +13,17 @@ const App = () => {
 
   const { insertNode, editNode, deleteNode } = useNode();
 
-  const handleInsertNode = (folderId, item) => {
+  const handleInsertNode = (folderId, item,dateTime) => {
     // item = input
-    const finalStructure = insertNode(commentsData, folderId, item);
+
+    const finalStructure = insertNode(commentsData, folderId, item, dateTime);
 
     setCommentsData(finalStructure);
   };
 
-  const handleEditNode = (folderId, value) => {
-    const finalStructure = editNode(commentsData, folderId, value);
+  const handleEditNode = (folderId, value, dateTime) => {
+
+    const finalStructure = editNode(commentsData, folderId, value, dateTime);
     setCommentsData(finalStructure);
   };
 
